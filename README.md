@@ -54,15 +54,18 @@ docker cp kmip:/opt/certs/client_key_jane_doe.pem /tmp/certs/
 docker cp kmip:/opt/certs/client_certificate_jane_doe.pem /tmp/certs/
 ```
 
-## Using with Percona Server (mysql)
+## Using with Percona Server / Percona XtraDB Cluster (mysql)
 
 In order to use with mysql, you need to configure component_keyring_kmip.cnf with following configuration:
 
 ```
-mkdir /tmp/certs
-docker cp kmip:/opt/certs/root_certificate.pem /tmp/certs/
-docker cp kmip:/opt/certs/client_key_jane_doe.pem /tmp/certs/
-docker cp kmip:/opt/certs/client_certificate_jane_doe.pem /tmp/certs/
+{
+  "server_addr": "127.0.0.1",
+  "server_port": "5696",
+  "client_ca": "/tmp/certs/client_certificate_jane_doe.pem",
+  "client_key": "/tmp/certs/client_key_jane_doe.pem",
+  "server_ca": "/tmp/certs/root_certificate.pem"
+}
 ```
 
 ## Using with Percona Xtrabackup test suite
