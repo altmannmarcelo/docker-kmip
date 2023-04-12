@@ -1,11 +1,18 @@
 # Pull base image.
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt -y install git pip python3 python3-pip
+RUN apt update && \
+    DEBIAN_FRONTEND=noninteractive apt -y install apt-utils && \
+    DEBIAN_FRONTEND=noninteractive apt -y upgrade
 
-RUN python3 -m pip install pykmip cryptography pycrypto
+RUN DEBIAN_FRONTEND=noninteractive apt -y install git pip python3 python3-pip
 
-RUN git clone https://github.com/OpenKMIP/PyKMIP.git /opt/PyKMIP
+RUN python3 -m pip install cryptography pycrypto
+
+RUN git clone https://github.com/dutow/PyKMIP.git /opt/PyKMIP
+#ADD pykmip-src /opt/PyKMIP
+
+RUN cd /opt/PyKMIP && python3 setup.py install
 
 RUN mkdir /opt/certs /opt/polices
 
